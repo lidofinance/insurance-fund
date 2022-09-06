@@ -6,6 +6,6 @@ compiler:
   evm_version: istanbul
   minify_source: false
   solc:
-    version: 0.8.13
+    version: 0.8.16
     optimize: true
     runs: 200
