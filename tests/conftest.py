@@ -2,6 +2,8 @@ import pytest
 import brownie
 import eth_utils
 
+from utils.config import ERC20_TOKENS
+
 
 @pytest.fixture(autouse=True)
 def isolation(fn_isolation):
@@ -39,3 +41,15 @@ def destructable(stranger):
 )
 def ether_amount(request):
     return request.param
+
+
+@pytest.fixture(
+    scope="session",
+    params=ERC20_TOKENS,
+)
+def erc20(accounts, chain, request):
+    (token_address, holder_address) = request.param[chain.id]
+    token = brownie.interface.ERC20(token_address)
+    holder = accounts.at(holder_address, True)
+    one_coin = 10 ** token.decimals()
+    return (token, holder, one_coin)
