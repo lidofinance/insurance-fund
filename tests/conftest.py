@@ -29,8 +29,8 @@ def insurance_fund(owner):
 
 
 @pytest.fixture(scope="function")
-def destructable(anyone):
-    return brownie.Destructable.deploy({"from": anyone})
+def destructable(stranger):
+    return brownie.Destructable.deploy({"from": stranger})
 
 
 @pytest.fixture(
