@@ -1,7 +1,7 @@
 import brownie
 
 
-def test_send_ether(insurance_fund, anyone, ether_amount):
+def test_receive_ether(insurance_fund, anyone, ether_amount):
     prev_insurance_fund_balance = insurance_fund.balance()
     prev_anyone_balance = anyone.balance()
 
@@ -17,7 +17,7 @@ def test_send_ether(insurance_fund, anyone, ether_amount):
     ), "sender balance should remain unchanged"
 
 
-def test_send_ether_via_selfdestruct(insurance_fund, destructable, anyone, ether_amount):
+def test_receive_ether_via_selfdestruct(insurance_fund, destructable, anyone, ether_amount):
     prev_insurance_fund_balance = insurance_fund.balance()
     prev_anyone_balance = anyone.balance()
 
