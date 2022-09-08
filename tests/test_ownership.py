@@ -13,7 +13,7 @@ def test_renounce_ownership_as_owner(insurance_fund, owner):
 
 
 def test_renounce_ownership_as_stranger(insurance_fund, stranger, owner):
-    with brownie.reverts("Ownable: caller is not the owner"):
+    with brownie.reverts("Renouncing ownership disabled!"):
         insurance_fund.renounceOwnership({"from": stranger})
 
     assert insurance_fund.owner() == owner.address, "owner should remain unchanged"
@@ -34,6 +34,6 @@ def test_change_owner_to_zero_address(insurance_fund, owner):
 
 def test_change_owner_as_stranger(insurance_fund, owner, stranger):
     with brownie.reverts("Ownable: caller is not the owner"):
-        insurance_fund.renounceOwnership({"from": stranger})
+        insurance_fund.changeOwner(stranger.address, {"from": stranger})
 
     assert insurance_fund.owner() == owner.address, "owner should remain unchanged"
