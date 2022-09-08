@@ -44,7 +44,7 @@ def ether_amount(request):
 
 
 @pytest.fixture(
-    scope="session",
+    scope="function",
     params=ERC20_TOKENS,
 )
 def erc20(accounts, chain, request):
