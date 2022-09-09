@@ -46,7 +46,7 @@ contract InsuranceFund is Ownable {
     /// @notice prevents `owner` from renouncing ownership and potentially locking assets forever
     /// @dev overrides Ownable's `renounceOwnership` to always revert
     function renounceOwnership() public view override onlyOwner {
-        revert("Renouncing ownership disabled!");
+        revert("DISABLED");
     }
 
     /// @notice transfer ownership to another address
@@ -65,7 +65,7 @@ contract InsuranceFund is Ownable {
         burnDisallowed(_recipient)
     {
         (bool success, ) = _recipient.call{value: _amount}("");
-        require(success, "Failed to send ether");
+        require(success, "TRANSFER FAILED");
         emit EtherTransferred(_recipient, _amount);
     }
 
