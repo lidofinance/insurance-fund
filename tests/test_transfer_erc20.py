@@ -84,6 +84,11 @@ def test_transfer_erc20_as_owner(chain, insurance_fund, erc20, owner):
             token.balanceOf(insurance_fund.address) == 0
         ), "insurance fund should have no tokens"
 
+    assert "ERC20Transferred" in tx.events
+    assert tx.events["ERC20Transferred"]["_token"] == token.address
+    assert tx.events["ERC20Transferred"]["_recipient"] == owner.address
+    assert tx.events["ERC20Transferred"]["_amount"] == prev_insurance_fund_balance
+
 
 def test_burn_erc20(insurance_fund, erc20, owner):
     (token, holder, one_coin) = erc20
