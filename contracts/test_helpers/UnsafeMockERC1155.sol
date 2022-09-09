@@ -33,7 +33,7 @@ contract UnsafeMockERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
      * @dev See {_setURI}.
      */
     constructor() {
-        _setURI("uri");
+        _setURI("");
         _mint(msg.sender, 0, type(uint256).max, "");
     }
 
