@@ -45,7 +45,7 @@ contract InsuranceFund is Ownable {
 
     /// @notice prevents `owner` from renouncing ownership and potentially locking assets forever
     /// @dev overrides Ownable's `renounceOwnership` to always revert
-    function renounceOwnership() public view override onlyOwner {
+    function renounceOwnership() public pure override {
         revert("DISABLED");
     }
 
