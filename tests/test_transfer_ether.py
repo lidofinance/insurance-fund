@@ -96,3 +96,27 @@ def test_burn_ether(insurance_fund, destructable, owner, ether_amount):
     assert (
         insurance_fund.balance() == prev_insurance_fund_balance
     ), "insurance fund balance should stay unchanged"
+
+
+def test_transfer_fail(insurance_fund, destructable, ether_rejector, owner, ether_amount):
+    prev_insurance_fund_balance = insurance_fund.balance()
+    destructable.die(insurance_fund.address, {"from": owner, "value": ether_amount})
+
+    assert (
+        insurance_fund.balance() == prev_insurance_fund_balance + ether_amount
+    ), "insurance fund should receive ether"
+
+    prev_rejector_balance = ether_rejector.balance()
+    prev_insurance_fund_balance = insurance_fund.balance()
+
+    with brownie.reverts("TRANSFER FAILED"):
+        insurance_fund.transferEther(
+            ether_rejector.address, ether_amount, {"from": owner}
+        )
+
+    assert (
+        ether_rejector.balance() == prev_rejector_balance
+    ), "ether rejector balance should stay unchanged"
+    assert (
+        insurance_fund.balance() == prev_insurance_fund_balance
+    ), "insurance fund balance should stay unchanged"
