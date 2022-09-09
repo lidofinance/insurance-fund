@@ -29,7 +29,8 @@ contract InsuranceFund is Ownable {
         address indexed _token,
         address indexed _recipient,
         uint256 _tokenId,
-        uint256 _amount
+        uint256 _amount,
+        bytes _data
     );
 
     constructor(address _owner) {
@@ -106,16 +107,17 @@ contract InsuranceFund is Ownable {
     function transferERC1155(
         address _token,
         address _recipient,
-        uint256 _tokenId
+        uint256 _tokenId,
+        uint256 _amount,
+        bytes calldata _data
     ) external onlyOwner burnDisallowed(_recipient) {
-        uint256 amount = IERC1155(_token).balanceOf(address(this), _tokenId);
         IERC1155(_token).safeTransferFrom(
             address(this),
             _recipient,
             _tokenId,
-            amount,
-            ""
+            _amount,
+            _data
         );
-        emit ERC1155Transferred(_token, _recipient, _tokenId, amount);
+        emit ERC1155Transferred(_token, _recipient, _tokenId, _amount, _data);
     }
 }
