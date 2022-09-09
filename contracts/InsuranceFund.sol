@@ -25,8 +25,8 @@ contract InsuranceFund is Ownable {
         uint256 _tokenId
     );
     event ERC1155Transferred(
-        address indexed _recipient,
         address indexed _token,
+        address indexed _recipient,
         uint256 _tokenId,
         uint256 _amount
     );
@@ -104,8 +104,8 @@ contract InsuranceFund is Ownable {
     /// @param _recipient address to transfer the token to
     function transferERC1155(
         address _token,
-        uint256 _tokenId,
-        address _recipient
+        address _recipient,
+        uint256 _tokenId
     ) external onlyOwner burnDisallowed(_recipient) {
         uint256 amount = IERC1155(_token).balanceOf(address(this), _tokenId);
         IERC1155(_token).safeTransferFrom(
@@ -115,6 +115,6 @@ contract InsuranceFund is Ownable {
             amount,
             ""
         );
-        emit ERC1155Transferred(_recipient, _token, _tokenId, amount);
+        emit ERC1155Transferred(_token, _recipient, _tokenId, amount);
     }
 }
