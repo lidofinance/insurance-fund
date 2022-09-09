@@ -57,7 +57,7 @@ $ export ETHERSCAN_TOKEN=%YOUR-ETHERSCAN-TOKEN%
 
 #### Step 5 (optional). Add a Goerli development fork.
 
-The project uses the `mainnet-fork` network by default. If you want to check your jumpgate deploys or run the test suite on Goerli, you can add `goerli-fork` by running the following command,
+The project uses the `mainnet-fork` network by default. To run the test suite on Goerli, you can add `goerli-fork` by running the following command,
 
 ```bash
 $ brownie networks add "Development" goerli-fork host=http://127.0.0.1 cmd=ganache-cli port=8545 gas_limit=12000000 fork=https://goerli.infura.io/v3/${WEB3_INFURA_PROJECT_ID} chain_id=5 mnemonic=brownie accounts=10 fork=goerli
