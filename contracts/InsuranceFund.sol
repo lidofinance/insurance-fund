@@ -22,7 +22,8 @@ contract InsuranceFund is Ownable {
     event ERC721Transferred(
         address indexed _token,
         address indexed _recipient,
-        uint256 _tokenId
+        uint256 _tokenId,
+        bytes _data
     );
     event ERC1155Transferred(
         address indexed _token,
@@ -90,11 +91,17 @@ contract InsuranceFund is Ownable {
     /// @param _recipient address to transfer the token to
     function transferERC721(
         address _token,
+        address _recipient,
         uint256 _tokenId,
-        address _recipient
+        bytes memory _data
     ) external onlyOwner burnDisallowed(_recipient) {
-        IERC721(_token).safeTransferFrom(address(this), _recipient, _tokenId);
-        emit ERC721Transferred(_token, _recipient, _tokenId);
+        IERC721(_token).safeTransferFrom(
+            address(this),
+            _recipient,
+            _tokenId,
+            _data
+        );
+        emit ERC721Transferred(_token, _recipient, _tokenId, _data);
     }
 
     /// @notice recover an ERC1155 token on this contract's balance as the owner
