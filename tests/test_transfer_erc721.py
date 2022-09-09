@@ -16,8 +16,9 @@ def test_transfer_erc721_as_stranger(insurance_fund, erc721, stranger):
     with brownie.reverts("Ownable: caller is not the owner"):
         insurance_fund.transferERC721(
             token.address,
-            tokenId,
             holder.address,
+            tokenId,
+            "",
             {"from": stranger},
         )
 
@@ -39,7 +40,7 @@ def test_transfer_erc721_as_owner(insurance_fund, erc721, owner):
     ), "insurance fund should receive token"
 
     tx = insurance_fund.transferERC721(
-        token.address, tokenId, holder.address, {"from": owner}
+        token.address, holder.address, tokenId, "", {"from": owner}
     )
 
     assert token.ownerOf(tokenId) == holder.address, "holder should get token back"
@@ -64,7 +65,7 @@ def test_burn_erc721(insurance_fund, erc721, owner):
 
     with brownie.reverts("NO BURN"):
         insurance_fund.transferERC721(
-            token.address, tokenId, brownie.ZERO_ADDRESS, {"from": owner}
+            token.address, brownie.ZERO_ADDRESS, tokenId, "", {"from": owner}
         )
 
     assert (
