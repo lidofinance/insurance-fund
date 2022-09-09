@@ -8,7 +8,7 @@ import "OpenZeppelin/openzeppelin-contracts@4.7.3/contracts/token/ERC721/IERC721
 import "OpenZeppelin/openzeppelin-contracts@4.7.3/contracts/token/ERC1155/IERC1155.sol";
 
 /// @title Lido Insurance Fund
-/// @author info@lido.fi
+/// @author mymphe
 /// @notice serves as a vault for Lido insurance funds; `owner` has full access
 contract InsuranceFund is Ownable {
     using SafeERC20 for IERC20;
