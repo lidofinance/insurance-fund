@@ -5,7 +5,7 @@ def test_initial_owner(insurance_fund, owner):
     assert insurance_fund.owner() == owner.address, "owner address should match"
 
 
-def test_renounce_ownership_as_owner(insurance_fund, owner, anyone):
+def test_renounce_ownership(insurance_fund, owner, anyone):
     with brownie.reverts("DISABLED"):
         insurance_fund.renounceOwnership({"from": anyone})
 
