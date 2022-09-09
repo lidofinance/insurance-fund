@@ -58,3 +58,12 @@ def erc20(accounts, chain, request):
     holder = accounts.at(holder_address, True)
     one_coin = 10 ** token.decimals()
     return (token, holder, one_coin)
+
+
+@pytest.fixture(
+    scope="function",
+)
+def erc721(stranger):
+    token = brownie.MockERC721.deploy({"from": stranger})
+    tokenId = 0
+    return (token, stranger, tokenId)
