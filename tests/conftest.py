@@ -76,3 +76,12 @@ def erc1155(stranger):
     token = brownie.MockERC1155.deploy({"from": stranger})
     tokenId = 0
     return (token, stranger, tokenId)
+
+
+@pytest.fixture(
+    scope="function",
+)
+def unsafe_erc1155(stranger):
+    token = brownie.UnsafeMockERC1155.deploy({"from": stranger})
+    tokenId = 0
+    return (token, stranger, tokenId)
