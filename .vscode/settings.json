@@ -1,4 +1,4 @@
 {
-    "solidity.compileUsingRemoteVersion": "v0.8.16+commit.07a7930e",
+    "solidity.compileUsingRemoteVersion": "v0.8.10+commit.fc410830",
     "python.formatting.provider": "black"
 }
