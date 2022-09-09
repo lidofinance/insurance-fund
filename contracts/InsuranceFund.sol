@@ -50,12 +50,6 @@ contract InsuranceFund is Ownable {
         revert("DISABLED");
     }
 
-    /// @notice transfer ownership to another address
-    /// @dev `Ownable` reverts for zero address and emit the event under the hood
-    function changeOwner(address _newOwner) external onlyOwner {
-        transferOwnership(_newOwner);
-    }
-
     /// @notice transfers ether from this contract
     /// @dev using the safer `call` instead of `transfer`
     /// @param _recipient address to transfer ether to
