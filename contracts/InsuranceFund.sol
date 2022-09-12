@@ -85,7 +85,7 @@ contract InsuranceFund is Ownable {
     /// @param _token address of the ERC721 token
     /// @param _recipient address to transfer the token to
     /// @param _tokenId id of the individual token
-    /// @param _data data to transfer along; required for `ERC721Receiver` recipients
+    /// @param _data data to transfer along
     function transferERC721(
         address _token,
         address _recipient,
@@ -107,7 +107,7 @@ contract InsuranceFund is Ownable {
     /// @param _recipient address to transfer the token to
     /// @param _tokenId id of the individual token to transfer
     /// @param _amount amount of tokens to transfer
-    /// @param _data data to transfer along; required for `ERC721Receiver` recipients
+    /// @param _data data to transfer along
     function transferERC1155(
         address _token,
         address _recipient,
