@@ -35,7 +35,7 @@ contract InsuranceFund is Ownable {
     );
 
     constructor(address _owner) {
-        transferOwnership(_owner);
+        _transferOwnership(_owner);
     }
 
     /// @notice prevents burn for transfer functions
