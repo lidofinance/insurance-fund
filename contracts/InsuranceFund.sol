@@ -35,6 +35,7 @@ contract InsuranceFund is Ownable {
     );
 
     constructor(address _owner) {
+        require(_owner != address(0), "ZERO ADDRESS");
         _transferOwnership(_owner);
     }
 
