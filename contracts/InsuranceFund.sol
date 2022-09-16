@@ -46,9 +46,9 @@ contract InsuranceFund is Ownable {
         _;
     }
 
-    constructor(address _owner) {
-        require(_owner != address(0), "ZERO ADDRESS");
-        _transferOwnership(_owner);
+    constructor(address _initialOwner) {
+        require(_initialOwner != address(0), "ZERO ADDRESS");
+        _transferOwnership(_initialOwner);
     }
 
     /**
