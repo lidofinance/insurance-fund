@@ -1,6 +1,6 @@
 <h1 align="center">Lido Insurance Fund</h1>
 
-![solidity 0.8.§3](https://img.shields.io/badge/solidity-0.8.16-lightgray)
+![solidity 0.8.10](https://img.shields.io/badge/solidity-0.8.10-lightgray)
 ![python ~3.8.9](https://img.shields.io/badge/python-~3.9-blue)
 ![eth_brownie ^1.19.0](https://img.shields.io/badge/eth__brownie-^1.19.1-brown)
 ![license GPL](https://img.shields.io/badge/license-GPL-green)
