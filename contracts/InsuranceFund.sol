@@ -34,17 +34,17 @@ contract InsuranceFund is Ownable {
         bytes _data
     );
 
-    constructor(address _owner) {
-        require(_owner != address(0), "ZERO ADDRESS");
-        _transferOwnership(_owner);
-    }
-
     /// @notice prevents burn for transfer functions
     /// @dev checks for zero address and reverts if true
     /// @param _recipient address of the transfer recipient
     modifier burnDisallowed(address _recipient) {
         require(_recipient != address(0), "NO BURN");
         _;
+    }
+
+    constructor(address _owner) {
+        require(_owner != address(0), "ZERO ADDRESS");
+        _transferOwnership(_owner);
     }
 
     /// @notice forbids owner from renouncing ownership and locking assets forever
