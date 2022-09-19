@@ -201,3 +201,57 @@ def test_burn_unsafe_erc1155(insurance_fund, unsafe_erc1155, owner, amount):
     assert (
         token.balanceOf(insurance_fund.address, token_id) == prev_insurance_fund_balance
     ), "insurance fund balance should stay unchanged"
+
+
+def test_transfer_unsafe_insufficient_erc1155(
+    insurance_fund, unsafe_erc1155, owner, stranger
+):
+    amount = 1
+    (token, holder, token_id) = unsafe_erc1155
+    assert (
+        token.balanceOf(holder.address, token_id) >= amount
+    ), "holder should own tokens"
+
+    prev_holder_balance = token.balanceOf(holder.address, token_id)
+    prev_insurance_fund_balance = token.balanceOf(insurance_fund.address, token_id)
+
+    token.safeTransferFrom(
+        holder.address,
+        insurance_fund.address,
+        token_id,
+        amount,
+        "",
+        {"from": holder},
+    )
+
+    assert (
+        token.balanceOf(holder.address, token_id) == prev_holder_balance - amount
+    ), "tokens should be deducted from holder"
+    assert (
+        token.balanceOf(insurance_fund.address, token_id)
+        == prev_insurance_fund_balance + amount
+    ), "insurance fund should receive tokens"
+
+    prev_stranger_balance = token.balanceOf(stranger.address, token_id)
+    prev_insurance_fund_balance = token.balanceOf(insurance_fund.address, token_id)
+    transfer_amount = prev_insurance_fund_balance + 1
+
+    data = "hello"
+    data_hex = data.encode("utf-8").hex()
+
+    with brownie.reverts():
+        insurance_fund.transferERC1155(
+            token.address,
+            stranger.address,
+            token_id,
+            transfer_amount,
+            data_hex,
+            {"from": owner},
+        )
+
+    assert (
+        token.balanceOf(stranger.address, token_id) == prev_stranger_balance
+    ), "stranger balance should stay unchanged"
+    assert (
+        token.balanceOf(insurance_fund.address, token_id) == prev_insurance_fund_balance
+    ), "insurance fund balance should stay unchanged"
