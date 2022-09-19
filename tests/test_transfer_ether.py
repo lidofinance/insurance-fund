@@ -48,8 +48,12 @@ def test_transfer_ether_as_stranger(
         insurance_fund.balance() == prev_insurance_fund_balance + ether_amount
     ), "insurance fund should receive ether"
 
+    prev_insurance_fund_balance = insurance_fund.balance()   
+
     with brownie.reverts("Ownable: caller is not the owner"):
         insurance_fund.transferEther(stranger.address, ether_amount, {"from": stranger})
+    
+    assert insurance_fund.balance() == prev_insurance_fund_balance
 
 
 def test_transfer_ether_as_owner(
