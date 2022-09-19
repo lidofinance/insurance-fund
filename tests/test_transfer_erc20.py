@@ -28,9 +28,8 @@ def test_receive_erc20(insurance_fund, erc20, chain):
         ), "holder should have one less coin"
         assert (
             token.balanceOf(insurance_fund.address)
-            == prev_insurance_fund_balance + one_coin,
-            "insurance fund should have one more coin",
-        )
+            == prev_insurance_fund_balance + one_coin
+        ), "insurance fund should have one more coin"
 
 
 def test_transfer_erc20_as_stranger(insurance_fund, erc20, stranger):
@@ -108,3 +107,20 @@ def test_burn_erc20(insurance_fund, erc20, owner):
     assert (
         token.balanceOf(owner.address) == prev_owner_balance
     ), "owner balance should stay unchaged"
+
+
+def test_transfer_insufficient_erc20(insurance_fund, erc20, owner):
+    (token, holder, one_coin) = erc20
+    token.transfer(insurance_fund.address, one_coin, {"from": holder})
+
+    prev_insurance_fund_balance = token.balanceOf(insurance_fund.address)
+    prev_owner_balance = token.balanceOf(owner.address)
+    transfer_amount = prev_insurance_fund_balance + 2
+
+    with brownie.reverts():
+        insurance_fund.transferERC20(
+            token.address, owner.address, transfer_amount, {"from": owner}
+        )
+
+    assert token.balanceOf(insurance_fund.address) == prev_insurance_fund_balance
+    assert token.balanceOf(owner.address) == prev_owner_balance
