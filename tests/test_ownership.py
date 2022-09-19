@@ -13,9 +13,12 @@ def test_renounce_ownership(insurance_fund, owner, anyone):
 
 
 def test_transfer_ownership_as_owner(insurance_fund, owner, stranger):
-    insurance_fund.transferOwnership(stranger.address, {"from": owner})
+    tx = insurance_fund.transferOwnership(stranger.address, {"from": owner})
 
     assert insurance_fund.owner() == stranger.address, "stranger should now be owner"
+    assert "OwnershipTransferred" in tx.events
+    assert tx.events["OwnershipTransferred"]["previousOwner"] == owner.address
+    assert tx.events["OwnershipTransferred"]["newOwner"] == stranger.address
 
 
 def test_transfer_ownership_to_zero_address(insurance_fund, owner):
