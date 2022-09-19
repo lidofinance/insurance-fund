@@ -48,11 +48,11 @@ def test_transfer_ether_as_stranger(
         insurance_fund.balance() == prev_insurance_fund_balance + ether_amount
     ), "insurance fund should receive ether"
 
-    prev_insurance_fund_balance = insurance_fund.balance()   
+    prev_insurance_fund_balance = insurance_fund.balance()
 
     with brownie.reverts("Ownable: caller is not the owner"):
         insurance_fund.transferEther(stranger.address, ether_amount, {"from": stranger})
-    
+
     assert insurance_fund.balance() == prev_insurance_fund_balance
 
 
@@ -102,7 +102,9 @@ def test_burn_ether(insurance_fund, destructable, owner, ether_amount):
     ), "insurance fund balance should stay unchanged"
 
 
-def test_transfer_fail(insurance_fund, destructable, ether_rejector, owner, ether_amount):
+def test_transfer_fail(
+    insurance_fund, destructable, ether_rejector, owner, ether_amount
+):
     prev_insurance_fund_balance = insurance_fund.balance()
     destructable.die(insurance_fund.address, {"from": owner, "value": ether_amount})
 
@@ -121,6 +123,31 @@ def test_transfer_fail(insurance_fund, destructable, ether_rejector, owner, ethe
     assert (
         ether_rejector.balance() == prev_rejector_balance
     ), "ether rejector balance should stay unchanged"
+    assert (
+        insurance_fund.balance() == prev_insurance_fund_balance
+    ), "insurance fund balance should stay unchanged"
+
+
+def test_transfer_insufficient_balance(
+    insurance_fund, destructable, owner, stranger, ether_amount
+):
+    prev_insurance_fund_balance = insurance_fund.balance()
+    destructable.die(insurance_fund.address, {"from": owner, "value": ether_amount})
+
+    assert (
+        insurance_fund.balance() == prev_insurance_fund_balance + ether_amount
+    ), "insurance fund should receive ether"
+
+    prev_strange_balance = stranger.balance()
+    prev_insurance_fund_balance = insurance_fund.balance()
+    transfer_amount = prev_insurance_fund_balance + 1
+
+    with brownie.reverts("TRANSFER FAILED"):
+        insurance_fund.transferEther(stranger.address, transfer_amount, {"from": owner})
+
+    assert (
+        stranger.balance() == prev_strange_balance
+    ), "stranger balance should stay unchanged"
     assert (
         insurance_fund.balance() == prev_insurance_fund_balance
     ), "insurance fund balance should stay unchanged"
