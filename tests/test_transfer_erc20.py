@@ -2,6 +2,7 @@ import brownie
 from math import isclose
 
 from utils.helpers import is_steth
+from utils.config import STETH_ERROR_MARGIN
 
 
 def test_receive_erc20(insurance_fund, erc20, chain):
@@ -12,10 +13,10 @@ def test_receive_erc20(insurance_fund, erc20, chain):
 
     token.transfer(insurance_fund.address, one_coin, {"from": holder})
 
-    # sometimes we can lose 1 stWei during transfer
+    # sometimes we can lose 1-2 stWei during transfer
     if is_steth(chain.id, token.address):
         assert isclose(
-            token.balanceOf(holder.address), prev_holder_balance - one_coin, abs_tol=1
+            token.balanceOf(holder.address), prev_holder_balance - one_coin, abs_tol=STETH_ERROR_MARGIN
         ), "holder should have one less coin with 1 stWei tolerance"
         assert isclose(
             token.balanceOf(insurance_fund.address),
@@ -66,14 +67,14 @@ def test_transfer_erc20_as_owner(chain, insurance_fund, erc20, owner):
         token.address, owner.address, prev_insurance_fund_balance, {"from": owner}
     )
 
-    # sometimes we can lose 1 stWei during transfer
+    # sometimes we can lose 1-2 stWei during transfer
     if is_steth(chain.id, token.address):
         assert isclose(
             token.balanceOf(owner.address),
             prev_owner_balance + prev_insurance_fund_balance,
             abs_tol=1,
         )
-        assert isclose(token.balanceOf(insurance_fund.address), 0, abs_tol=1)
+        assert isclose(token.balanceOf(insurance_fund.address), 0, abs_tol=STETH_ERROR_MARGIN)
     else:
         assert (
             token.balanceOf(owner.address)
