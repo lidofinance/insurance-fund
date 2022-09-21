@@ -105,4 +105,14 @@ BAYC = {
 
 ERC721_TOKENS = [ENS_REGISTRAR, RARIBLE, BAYC]
 
+MECHA = {
+    1: (
+        "0xf4baCB2375654Ef2459f427C8c6cF34573f75154", # token
+        "0xd387a6e4e84a6c86bd90c158c6028a58cc8ac459", # holder,
+        26, # token id
+    )
+}
+
+ERC1155_TOKENS= [MECHA]
+
 STETH_ERROR_MARGIN = 2

@@ -2,9 +2,9 @@ import brownie
 import pytest
 
 
-@pytest.mark.parametrize("amount", [1, 2**256 - 1])
-def test_receive_erc1155_safely(insurance_fund, erc1155, amount):
+def test_receive_erc1155_safely(insurance_fund, erc1155):
     (token, holder, token_id) = erc1155
+    amount = 1
 
     assert (
         token.balanceOf(holder.address, token_id) >= amount
