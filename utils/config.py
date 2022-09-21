@@ -60,4 +60,49 @@ DAI = {
 
 ERC20_TOKENS = [STETH, WSTETH, LDO, TETHER, DAI]
 
+# Disclaimer to ERC721, ERC1155 tokens
+# Goerli counterparts may be completely different projects
+# as some Mainnet projects do not have/maintain Goerli deployments
+
+ENS_REGISTRAR = {
+    1: (
+        "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",  # token
+        "0x3e40D73EB977Dc6a537aF587D48316feE66E9C8c",  # holder
+        63621153800417233641014210776106383967309728151643198591333607114886514684126,  # token id
+    ),
+    5: (
+        "0xff02b7d59975E76F67B63b20b813a9Ec0f6AbD60",  # token
+        "0x3e50931b32e49fb9c4938198fd5ef4293e15b90f",  # holder
+        0,  # token id
+    ),
+}
+
+RARIBLE = {
+    1: (
+        "0x60F80121C31A0d46B5279700f9DF786054aa5eE5",  # token
+        "0xedba5d56d0147aee8a227d284bcaac03b4a87ed4",  # holder
+        502173,  # token id
+    ),
+    5: (
+        "0x50b9E17D1BA03f569C534002cd7B4bAdFf88c4fC",  # token
+        "0x9e3310d1610e4ecad0e6acf021c63aca130f8d5d",  # holder
+        2,  # token id
+    ),
+}
+
+BAYC = {
+    1: (
+        "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",  # token
+        "0x1b523dc90a79cf5ee5d095825e586e33780f7188",  # holder
+        9547,  # token id
+    ),
+    5: (
+        "0xbd4541858bdd5ccF7CfE0228C3767185ac1A4352",  # token
+        "0x54e1b9ca7d5a58c3227319c1142708ec8c695e0c",  # holder
+        1,  # token id
+    ),
+}
+
+ERC721_TOKENS = [ENS_REGISTRAR, RARIBLE, BAYC]
+
 STETH_ERROR_MARGIN = 2

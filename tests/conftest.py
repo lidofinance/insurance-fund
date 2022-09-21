@@ -2,7 +2,7 @@ import pytest
 import brownie
 import eth_utils
 
-from utils.config import ERC20_TOKENS
+from utils.config import ERC20_TOKENS, ERC721_TOKENS
 
 
 @pytest.fixture(autouse=True)
@@ -62,11 +62,13 @@ def erc20(accounts, chain, request):
 
 @pytest.fixture(
     scope="function",
+    params=ERC721_TOKENS,
 )
-def erc721(stranger):
-    token = brownie.MockERC721.deploy({"from": stranger})
-    tokenId = 0
-    return (token, stranger, tokenId)
+def erc721(accounts, chain, request):
+    (token_address, holder_address, token_id) = request.param[chain.id]
+    token = brownie.interface.IERC721(token_address)
+    holder = accounts.at(holder_address, True)
+    return (token, holder, token_id)
 
 
 @pytest.fixture(
