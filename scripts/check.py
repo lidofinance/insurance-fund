@@ -56,3 +56,12 @@ def main():
     wsteth.transfer(insurance_fund.address, corrected_wsteth_amount, {"from": owner})
 
     assert math.isclose(wsteth.balanceOf(insurance_fund.address), prev_fund_balance + corrected_wsteth_amount, abs_tol=config.STETH_ERROR_MARGIN)
+
+    prev_owner_balance = wsteth.balanceOf(owner.address)
+    log.info(f"Retrieving {corrected_wsteth_amount} from the fund...")
+    insurance_fund.transferERC20(wsteth.address, owner.address, corrected_wsteth_amount, {"from": owner})
+
+    assert math.isclose(wsteth.balanceOf(owner.address), prev_owner_balance + corrected_wsteth_amount, abs_tol=config.STETH_ERROR_MARGIN)
+
+    log.okay("Check successful!")
+
