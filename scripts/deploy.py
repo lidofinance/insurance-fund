@@ -2,6 +2,7 @@ import sys
 import brownie
 from utils.env import check_env_var
 import utils.log as log
+from utils.helpers import is_development
 
 def main():
     DEPLOYER = check_env_var("DEPLOYER")
@@ -12,6 +13,9 @@ def main():
         log.error(f"Local account with id `{DEPLOYER}` not found!")
         sys.exit()
 
+    ETHERSCAN_TOKEN = check_env_var("ETHERSCAN_TOKEN", display=False)
+
+    publish_source = not is_development() and bool(ETHERSCAN_TOKEN)
 
     OWNER  = check_env_var("OWNER")
 
@@ -23,7 +27,8 @@ def main():
 
     insurance_fund = brownie.InsuranceFund.deploy(
         OWNER,
-        {"from": deployer}
+        {"from": deployer},
+        publish_source=publish_source,
     )
 
     log.okay("`InsuranceFund` has been deployed successfully at", insurance_fund.address)
