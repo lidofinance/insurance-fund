@@ -16,13 +16,15 @@ def test_receive_erc20(insurance_fund, erc20, chain):
     # sometimes we can lose 1-2 stWei during transfer
     if is_steth(chain.id, token.address):
         assert isclose(
-            token.balanceOf(holder.address), prev_holder_balance - one_coin, abs_tol=STETH_ERROR_MARGIN
-        ), "holder should have one less coin with 1 stWei tolerance"
+            token.balanceOf(holder.address),
+            prev_holder_balance - one_coin,
+            abs_tol=STETH_ERROR_MARGIN,
+        ), "holder should have one less coin with allowed stWei tolerance"
         assert isclose(
             token.balanceOf(insurance_fund.address),
             prev_insurance_fund_balance + one_coin,
-            abs_tol=1,
-        ), "insurance fund should have one more coin with 1 stWei tolerance"
+            abs_tol=STETH_ERROR_MARGIN,
+        ), "insurance fund should have one more coin with allowed stWei tolerance"
     else:
         assert (
             token.balanceOf(holder.address) == prev_holder_balance - one_coin
@@ -53,7 +55,7 @@ def test_transfer_erc20_as_stranger(insurance_fund, erc20, stranger):
     ), "stranger balance should stay unchanged"
     assert (
         token.balanceOf(insurance_fund.address) == prev_insurance_fund_balance
-    ), "insurance fund balance should stay unchaged"
+    ), "insurance fund balance should stay unchanged"
 
 
 def test_transfer_erc20_as_owner(chain, insurance_fund, erc20, owner):
@@ -72,9 +74,11 @@ def test_transfer_erc20_as_owner(chain, insurance_fund, erc20, owner):
         assert isclose(
             token.balanceOf(owner.address),
             prev_owner_balance + prev_insurance_fund_balance,
-            abs_tol=1,
+            abs_tol=STETH_ERROR_MARGIN,
         )
-        assert isclose(token.balanceOf(insurance_fund.address), 0, abs_tol=STETH_ERROR_MARGIN)
+        assert isclose(
+            token.balanceOf(insurance_fund.address), 0, abs_tol=STETH_ERROR_MARGIN
+        )
     else:
         assert (
             token.balanceOf(owner.address)
@@ -104,10 +108,10 @@ def test_burn_erc20(insurance_fund, erc20, owner):
 
     assert (
         token.balanceOf(insurance_fund.address) == prev_insurance_fund_balance
-    ), "insurance fund balance should stay unchaged"
+    ), "insurance fund balance should stay unchanged"
     assert (
         token.balanceOf(owner.address) == prev_owner_balance
-    ), "owner balance should stay unchaged"
+    ), "owner balance should stay unchanged"
 
 
 def test_transfer_insufficient_erc20(insurance_fund, erc20, owner):
