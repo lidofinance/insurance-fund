@@ -1,8 +1,10 @@
 import sys
+import json
 import brownie
 from utils.env import check_env_var
 import utils.log as log
 from utils.helpers import is_development
+
 
 def main():
     DEPLOYER = check_env_var("DEPLOYER")
@@ -17,9 +19,9 @@ def main():
 
     publish_source = not is_development() and bool(ETHERSCAN_TOKEN)
 
-    OWNER  = check_env_var("OWNER")
+    OWNER = check_env_var("OWNER")
 
-    log.info('NETWORK', brownie.network.show_active())
+    log.info("NETWORK", brownie.network.show_active())
     log.proceed()
 
     log.info("Deploying `InsuranceFund`...")
@@ -31,6 +33,19 @@ def main():
         publish_source=publish_source,
     )
 
-    log.okay("`InsuranceFund` has been deployed successfully at", insurance_fund.address)
+    log.okay(
+        "`InsuranceFund` has been deployed successfully at", insurance_fund.address
+    )
 
+    log.info("Creating JSON...")
+    deployed_filename = f"deployed.{brownie.network.show_active()}.json"
+    with open(deployed_filename, "w") as outfile:
+        json.dump(
+            {
+                "insurance_fund": insurance_fund.address,
+                "initial_owner": OWNER,
+            },
+            outfile,
+        )
 
+    log.okay("JSON created at", deployed_filename)
