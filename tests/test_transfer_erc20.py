@@ -3,7 +3,7 @@ import brownie
 from math import isclose
 
 from utils.helpers import is_steth
-from utils.config import ERC20_TOKENS, STETH_ERROR_MARGIN
+from utils.config import ERC20_TOKENS, STETH_ERROR_MARGIN, STETH
 
 
 @pytest.fixture(
@@ -142,3 +142,31 @@ def test_transfer_insufficient_erc20(insurance_fund, erc20, owner):
 
     assert token.balanceOf(insurance_fund.address) == prev_insurance_fund_balance
     assert token.balanceOf(owner.address) == prev_owner_balance
+
+
+def test_transfer_steth_shares(chain, accounts, insurance_fund, owner):
+    steth_address = STETH[chain.id][0]
+    steth = brownie.interface.stETH(steth_address)
+
+    holder = accounts.at(STETH[chain.id][1], True)
+
+    prev_holder_shares = steth.sharesOf(holder.address)
+    prev_insurance_fund_shares = steth.sharesOf(insurance_fund.address)
+
+    prev_holder_balance = steth.balanceOf(holder.address)
+    prev_insurance_fund_balance = steth.balanceOf(insurance_fund.address)
+
+    steth.transferShares(insurance_fund.address, prev_holder_shares, {"from": holder})
+
+    assert steth.sharesOf(holder.address) == 0, "holder should have no shares"
+    assert (
+        steth.sharesOf(insurance_fund.address)
+        == prev_insurance_fund_shares + prev_holder_shares
+    ), "insurance fund should receive all holder's shares"
+
+    assert isclose(steth.balanceOf(holder.address), 0, abs_tol=STETH_ERROR_MARGIN)
+    assert isclose(
+        steth.balanceOf(insurance_fund.address),
+        prev_insurance_fund_balance + prev_holder_balance,
+        abs_tol=STETH_ERROR_MARGIN,
+    )
