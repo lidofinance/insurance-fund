@@ -127,13 +127,18 @@ def test_burn_erc20(insurance_fund, erc20, owner):
     ), "owner balance should stay unchanged"
 
 
-def test_transfer_insufficient_erc20(insurance_fund, erc20, owner):
+def test_transfer_insufficient_erc20(chain, insurance_fund, erc20, owner):
     (token, holder, one_coin) = erc20
     token.transfer(insurance_fund.address, one_coin, {"from": holder})
 
     prev_insurance_fund_balance = token.balanceOf(insurance_fund.address)
     prev_owner_balance = token.balanceOf(owner.address)
-    transfer_amount = prev_insurance_fund_balance + STETH_ERROR_MARGIN + 1
+
+    overspill = 1
+    if is_steth(chain.id, token.address):
+        overspill += STETH_ERROR_MARGIN
+
+    transfer_amount = prev_insurance_fund_balance + overspill
 
     with brownie.reverts():
         insurance_fund.transferERC20(
