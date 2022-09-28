@@ -11,6 +11,11 @@ def isolation(fn_isolation):
 
 
 @pytest.fixture(scope="session")
+def deployer(accounts):
+    return accounts.add()
+
+
+@pytest.fixture(scope="session")
 def owner(accounts):
     return accounts[0]
 
@@ -26,8 +31,8 @@ def anyone(request):
 
 
 @pytest.fixture(scope="function")
-def insurance_fund(owner):
-    return brownie.InsuranceFund.deploy(owner.address, {"from": owner})
+def insurance_fund(deployer, owner):
+    return brownie.InsuranceFund.deploy(owner.address, {"from": deployer})
 
 
 @pytest.fixture(scope="function")
@@ -80,7 +85,6 @@ def erc1155(accounts, chain, request):
     token = brownie.interface.IERC1155(token_address)
     holder = accounts.at(holder_address, True)
     return (token, holder, token_id)
-
 
 
 @pytest.fixture(

@@ -1,7 +1,8 @@
 import brownie
 
 
-def test_initial_owner(insurance_fund, owner):
+def test_initial_owner(insurance_fund, deployer, owner):
+    assert insurance_fund.owner() != deployer.address, "deployer should not be owner"
     assert insurance_fund.owner() == owner.address, "owner address should match"
 
 
