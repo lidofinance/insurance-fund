@@ -133,7 +133,7 @@ def test_transfer_insufficient_erc20(insurance_fund, erc20, owner):
 
     prev_insurance_fund_balance = token.balanceOf(insurance_fund.address)
     prev_owner_balance = token.balanceOf(owner.address)
-    transfer_amount = prev_insurance_fund_balance + 10
+    transfer_amount = prev_insurance_fund_balance + STETH_ERROR_MARGIN + 1
 
     with brownie.reverts():
         insurance_fund.transferERC20(
