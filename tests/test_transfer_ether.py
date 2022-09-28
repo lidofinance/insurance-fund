@@ -1,4 +1,24 @@
 import brownie
+import pytest
+import eth_utils
+
+
+@pytest.fixture(
+    scope="session",
+    params=[0, 1, eth_utils.to_wei(1, "gwei"), eth_utils.to_wei(1, "ether")],
+)
+def ether_amount(request):
+    return request.param
+
+
+@pytest.fixture(scope="function")
+def destructable(stranger):
+    return brownie.Destructable.deploy({"from": stranger})
+
+
+@pytest.fixture(scope="function")
+def ether_rejector(stranger):
+    return brownie.EtherRejector.deploy({"from": stranger})
 
 
 def test_receive_ether(insurance_fund, anyone, ether_amount):

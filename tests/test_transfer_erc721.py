@@ -1,4 +1,18 @@
+import pytest
 import brownie
+
+from utils.config import ERC721_TOKENS
+
+
+@pytest.fixture(
+    scope="function",
+    params=ERC721_TOKENS,
+)
+def erc721(accounts, chain, request):
+    (token_address, holder_address, token_id) = request.param[chain.id]
+    token = brownie.interface.IERC721(token_address)
+    holder = accounts.at(holder_address, True)
+    return (token, holder, token_id)
 
 
 def test_transfer_erc721_as_stranger(insurance_fund, erc721, stranger):

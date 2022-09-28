@@ -1,8 +1,21 @@
+import pytest
 import brownie
 from math import isclose
 
 from utils.helpers import is_steth
-from utils.config import STETH_ERROR_MARGIN
+from utils.config import ERC20_TOKENS, STETH_ERROR_MARGIN
+
+
+@pytest.fixture(
+    scope="function",
+    params=ERC20_TOKENS,
+)
+def erc20(accounts, chain, request):
+    (token_address, holder_address) = request.param[chain.id]
+    token = brownie.interface.ERC20(token_address)
+    holder = accounts.at(holder_address, True)
+    one_coin = 10 ** token.decimals()
+    return (token, holder, one_coin)
 
 
 def test_receive_erc20(insurance_fund, erc20, chain):
