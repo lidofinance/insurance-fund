@@ -1,12 +1,15 @@
 {
     "extends": "solhint:recommended",
-    "plugins": [],
+    "plugins": [
+        "lido"
+    ],
     "rules": {
         "compiler-version": [
             "error",
             "^0.8.0"
         ],
         "state-visibility": "off",
-        "avoid-low-level-calls": "off"
+        "avoid-low-level-calls": "off",
+        "lido/fixed-compiler-version": "error"
     }
 }
